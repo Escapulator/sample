@@ -77,27 +77,8 @@ class _HomescreenState extends State<Homescreen>
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          InkResponse(
-                            splashColor: Colors.transparent,
-                            onTap: () => _controller.forward(),
-                            child: Hero(
-                              tag: 'avatar',
-                              child: CircleAvatar(
-                                radius: 24,
-                                backgroundColor: Colors.black,
-                                child: Text(
-                                  'JD',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                           ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
@@ -226,6 +207,58 @@ class _HomescreenState extends State<Homescreen>
                   ),
                 ),
               ),
+              if (!_controller.isCompleted)
+                Padding(
+                  padding: const EdgeInsets.only(top: kToolbarHeight, left: 16),
+                  child: InkResponse(
+                    splashColor: Colors.transparent,
+                    onTap: () => _controller.forward(),
+                    child: AnimatedBuilder(
+                      animation: _controller,
+                      builder: (context, child) {
+                        final slideX = Tween<double>(
+                          begin: 0,
+                          end: MediaQuery.of(context).size.width * .37,
+                        ).evaluate(_controller);
+                        final slideY = Tween<double>(
+                          begin: 0,
+                          end: MediaQuery.of(context).size.width * .2,
+                        ).evaluate(_controller);
+                        final scale = Tween<double>(
+                          begin: 1.0,
+                          end: 0.6,
+                        ).evaluate(_controller);
+                        final animateText = Tween<double>(
+                          begin: 14,
+                          end: 28,
+                        ).evaluate(_controller);
+                        final animateRadius = Tween<double>(
+                          begin: 24,
+                          end: 40,
+                        ).evaluate(_controller);
+                        return Transform.translate(
+                          offset: Offset(slideX, slideY),
+                          child: Transform.scale(
+                            scale: scale,
+                            alignment: Alignment.center,
+                            child: CircleAvatar(
+                              radius: animateRadius,
+                              backgroundColor: Colors.black,
+                              child: Text(
+                                'JD',
+                                style: TextStyle(
+                                  fontSize: animateText,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
             ],
           );
         },

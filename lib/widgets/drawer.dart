@@ -6,12 +6,19 @@ class CustomDrawer extends StatelessWidget {
   final VoidCallback onClose;
   final double animationValue;
 
-  const CustomDrawer({super.key, required this.onClose, required this.animationValue});
+  const CustomDrawer({
+    super.key,
+    required this.onClose,
+    required this.animationValue,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = Color.lerp(const Color(0x33F5F1F2), const Color(0xFFF5F1F2), animationValue);
-
+    final backgroundColor = Color.lerp(
+      const Color(0x33F5F1F2),
+      const Color(0xFFF5F1F2),
+      animationValue,
+    );
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -25,7 +32,10 @@ class CustomDrawer extends StatelessWidget {
             onTap: onClose,
             child: Container(
               padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
               child: const Icon(Icons.close),
             ),
           ),
@@ -36,29 +46,34 @@ class CustomDrawer extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 30),
-            Material(
-              child: Hero(
-                tag: 'avatar',
-                child: CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.black,
-                  child: const Text(
-                    'JD',
-                    style: TextStyle(fontSize: 28, color: Colors.white, fontWeight: FontWeight.w600),
+            if (animationValue == 1.0)
+              CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.black,
+                child: const Text(
+                  'JD',
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-            ),
             const SizedBox(height: 20),
-            const Text('John Doe', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700)),
+            const Text(
+              'John Doe',
+              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
+            ),
             Flexible(
               child: ListView.separated(
                 shrinkWrap: true,
                 padding: EdgeInsets.symmetric(vertical: 20),
                 physics: ClampingScrollPhysics(),
                 itemBuilder:
-                    (context, index) =>
-                        DrawerTile(title: listFeature[index].title!, subtitle: listFeature[index].subtitle!),
+                    (context, index) => DrawerTile(
+                      title: listFeature[index].title!,
+                      subtitle: listFeature[index].subtitle!,
+                    ),
                 separatorBuilder: (context, index) => SizedBox(height: 16),
                 itemCount: listFeature.length,
               ),
