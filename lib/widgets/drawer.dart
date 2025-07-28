@@ -41,43 +41,74 @@ class CustomDrawer extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-            if (animationValue == 1.0)
-              CircleAvatar(
-                radius: 40,
-                backgroundColor: Colors.black,
-                child: const Text(
-                  'JD',
-                  style: TextStyle(
-                    fontSize: 28,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: ClampingScrollPhysics(),
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
+                    if (animationValue == 1.0)
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.black,
+                        child: const Text(
+                          'JD',
+                          style: TextStyle(
+                            fontSize: 28,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 20),
+                    const Text(
+                      'John Doe',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                  ],
                 ),
               ),
-            const SizedBox(height: 20),
-            const Text(
-              'John Doe',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700),
             ),
-            Flexible(
-              child: ListView.separated(
-                shrinkWrap: true,
-                padding: EdgeInsets.symmetric(vertical: 20),
-                physics: ClampingScrollPhysics(),
-                itemBuilder:
-                    (context, index) => DrawerTile(
-                      title: listFeature[index].title!,
-                      subtitle: listFeature[index].subtitle!,
-                    ),
-                separatorBuilder: (context, index) => SizedBox(height: 16),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverList.separated(
+                itemBuilder: (context, index) {
+                  final item = listFeature[index];
+                  return index < listFeature.length - 1
+                      ? DrawerTile(title: item.title!, subtitle: item.subtitle!)
+                      : ListTile(
+                        tileColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        title: Text(
+                          item.title!,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        trailing: Icon(
+                          Icons.arrow_forward_ios,
+                          color: Color(0XFFAFAFAF),
+                        ),
+                      );
+                },
+                separatorBuilder:
+                    (context, index) => const SizedBox(height: 16),
                 itemCount: listFeature.length,
               ),
             ),
+            SliverToBoxAdapter(child: SizedBox(height: 30)),
           ],
         ),
       ),

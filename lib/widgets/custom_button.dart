@@ -5,7 +5,13 @@ class CustomButton extends StatelessWidget {
   final String label;
   final Color bg;
   final Color fg;
-  const CustomButton({super.key, required this.bg, required this.fg, required this.icon, required this.label});
+  const CustomButton({
+    super.key,
+    required this.bg,
+    required this.fg,
+    required this.icon,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +23,19 @@ class CustomButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 0,
       ),
-      child: Row(
-        children: [
-          Icon(icon, color: fg),
-          const SizedBox(width: 4),
-          Text(label, style: TextStyle(color: fg, fontWeight: FontWeight.w600)),
-        ],
-      ),
+      child:
+          label.isEmpty
+              ? Icon(icon, color: fg)
+              : Row(
+                children: [
+                  Icon(icon, color: fg),
+                  const SizedBox(width: 4),
+                  Text(
+                    label,
+                    style: TextStyle(color: fg, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
     );
   }
 }

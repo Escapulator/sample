@@ -66,9 +66,10 @@ class _HomescreenState extends State<Homescreen>
           final slide = width * _controller.value;
           return Stack(
             children: [
-              Scaffold(
-                backgroundColor: Colors.white,
-                body: SingleChildScrollView(
+              Container(
+                color: Colors.white10,
+                child: SingleChildScrollView(
+                  physics: ClampingScrollPhysics(),
                   padding: EdgeInsets.only(
                     top: kToolbarHeight,
                     left: 16,
@@ -77,8 +78,26 @@ class _HomescreenState extends State<Homescreen>
                   child: Column(
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          _controller.value == 0.0
+                              ? InkResponse(
+                                onTap: () => _controller.forward(),
+                                splashColor: Colors.transparent,
+                                child: CircleAvatar(
+                                  radius: 24,
+                                  backgroundColor: Colors.black,
+                                  child: Text(
+                                    'JD',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              )
+                              : SizedBox(),
                           ElevatedButton(
                             onPressed: () {},
                             style: ElevatedButton.styleFrom(
@@ -173,18 +192,11 @@ class _HomescreenState extends State<Homescreen>
                             fg: Colors.black,
                           ),
                           const SizedBox(width: 8),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xFFE6E6E6),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.more_horiz,
-                              color: Colors.black,
-                            ),
+                          CustomButton(
+                            icon: Icons.more_horiz,
+                            label: '',
+                            bg: Color(0xFFE6E6E6),
+                            fg: Colors.black,
                           ),
                         ],
                       ),
@@ -207,7 +219,7 @@ class _HomescreenState extends State<Homescreen>
                   ),
                 ),
               ),
-              if (!_controller.isCompleted)
+              if (_controller.value != 0.0 && _controller.value != 1.0)
                 Padding(
                   padding: const EdgeInsets.only(top: kToolbarHeight, left: 16),
                   child: InkResponse(
@@ -218,23 +230,15 @@ class _HomescreenState extends State<Homescreen>
                       builder: (context, child) {
                         final slideX = Tween<double>(
                           begin: 0,
-                          end: MediaQuery.of(context).size.width * .37,
+                          end: MediaQuery.of(context).size.width * .3,
                         ).evaluate(_controller);
                         final slideY = Tween<double>(
                           begin: 0,
-                          end: MediaQuery.of(context).size.width * .2,
+                          end: MediaQuery.of(context).size.width * .15,
                         ).evaluate(_controller);
                         final scale = Tween<double>(
                           begin: 1.0,
                           end: 0.6,
-                        ).evaluate(_controller);
-                        final animateText = Tween<double>(
-                          begin: 14,
-                          end: 28,
-                        ).evaluate(_controller);
-                        final animateRadius = Tween<double>(
-                          begin: 24,
-                          end: 40,
                         ).evaluate(_controller);
                         return Transform.translate(
                           offset: Offset(slideX, slideY),
@@ -242,12 +246,12 @@ class _HomescreenState extends State<Homescreen>
                             scale: scale,
                             alignment: Alignment.center,
                             child: CircleAvatar(
-                              radius: animateRadius,
+                              radius: 24,
                               backgroundColor: Colors.black,
                               child: Text(
                                 'JD',
                                 style: TextStyle(
-                                  fontSize: animateText,
+                                  fontSize: 14,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w600,
                                 ),
